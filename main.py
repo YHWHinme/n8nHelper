@@ -11,6 +11,11 @@ def main():
     q = queue.LifoQueue()
 
     def UI():
+        def handleQueue(AnswerQueue: queue.Queue):
+            if not q.empty():
+                data = AnswerQueue.get()
+                open("SomeFile", "w").write(data)
+
         def sendAuto(
             url: str = "http://172.16.24.60:5678/webhook/ce9a31a3-3ca8-4d03-aaad-2da31e96a93c",
         ):
