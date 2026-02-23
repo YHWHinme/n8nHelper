@@ -8,7 +8,8 @@ dependencies = [
     "asyncio>=4.0.0",
     "numpy>=2.4.2",
     "requests>=2.32.5",
-    "ttkbootstrap>=1.20.1",
+    "rich>=14.3.3",
+    "textual>=8.0.0",
     "watcher-cli>=0.1.0",
 ]
 
