@@ -8,8 +8,14 @@ dependencies = [
     "asyncio>=4.0.0",
     "numpy>=2.4.2",
     "requests>=2.32.5",
-    "ttkbootstrap>=1.20.1",
-    "watcher-cli>=0.1.0",
+    "streamlit>=1.54.0",
+    "streamlit-desktop-app>=0.3.4",
+]
+
+[dependency-groups]
+dev = [
+    "pyside6>=6.10.2",
+    "qtpy>=2.4.3",
 ]
 
 # [build-system]
