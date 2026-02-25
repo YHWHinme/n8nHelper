@@ -1,46 +1,46 @@
+import asyncio
 import queue
 import socket
 import threading
 
+# Dev packages
+import time
+
 import requests as rq
-import ttkbootstrap as tk
-from ttkbootstrap import Style
+
+# Textual Imports
+from textual import log
+from textual.app import App
+from textual.widgets import Button, Label
+
+responseQueue = queue.LifoQueue()  # Defining queue
+
+
+class TuiApp(App):
+    def compose(self):
+        yield Label("Test String [bold red]![/]")
+        yield Button("Print Callback")
+
+    async def on_button_pressed(self, event):
+        async def callback():
+            self.log(f"Starting event {time.strftime} ")
+            await asyncio.sleep(3)
+            self.log(f"Finishing event {time.strftime}")
+
+        await callback()
 
 
 def main():
-    q = queue.LifoQueue()
+    async def postReq(
+        SendingMessage: str,
+        url: str = "http://172.16.24.60:5678/webhook/ce9a31a3-3ca8-4d03-aaad-2da31e96a93c",
+    ):
+        # Fetching data from fields
+        fieldData: str = SendingMessage
 
-    def UI():
-        def sendAuto(
-            url: str = "http://172.16.24.60:5678/webhook/ce9a31a3-3ca8-4d03-aaad-2da31e96a93c",
-        ):
-            # Fetching data from fields
-            fieldData: str = dataSend.get("1.0", "end").strip()
-
-            payload = {"prompt": fieldData}
-            message = rq.post(url=url, data=payload)
-            print(message.json())
-
-        # Starter settings
-        window = tk.Tk()
-        Style(theme="darkly")
-
-        # Welcoming
-        welcome = tk.Label(window, text="Send your body")  # Raw label text
-        welcome.pack()
-
-        dataSend = tk.Text(window, height=20, width=70)  # Setting passwords
-        dataSend.pack()
-
-        # Button
-        loginButton = tk.Button(
-            window, text="Send Data!", command=sendAuto, bootstyle="success"
-        )
-        loginButton.pack()
-
-        # TODO: Add response logic for showing the response as soon as the queue is populated
-
-        window.mainloop()
+        payload = {"prompt": fieldData}
+        response = rq.post(url=url, data=payload)
+        print(response.json())
 
     def socketServer():
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -51,20 +51,18 @@ def main():
         while True:
             # Setting up the server
             client, _ = server.accept()
-            message = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 17\r\n\r\nhello How are you?"
+            message = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 17\r\n\r\Return message successful How are you?"
             client.send(message.encode())
 
             clientMessage = client.recv(1024).decode()  # Printing client message
-
-            q.put(clientMessage)
+            # TODO: Find out where to put client message
 
     serverThread = threading.Thread(target=socketServer, daemon=True)
-    uiThread = threading.Thread(target=UI)
 
     # Starting the threads
-    uiThread.start()
     serverThread.start()
 
 
 if __name__ == "__main__":
     main()
+    TuiApp().run()

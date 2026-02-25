@@ -1,19 +1,20 @@
-from textual.app import App
-from textual.widgets import Label, Static
+from textual.app import App, ComposeResult
+from textual.widgets import Button, Label, Static
 
 
-class HelloWorld(App):
+class HelloWorld(App[str]):
     CSS_PATH = "./styled.css"
 
-    def compose(self):
-        yield Static("HelloWorld!", classes="helloStyle1")
-        yield Label("What is your[red bold] name?[red/] Child?", classes="style1")
+    def compose(self) -> ComposeResult:
+        yield Static("HelloWorld!")
+        yield Label("Boolean Value test")
+        yield Button("Yes", id="yes")
+        yield Button("No", id="no")
 
-    def on_key(self, event):
-        match event.on_key:
-            case "q":
-                exit()
+        def on_button_pressed(self, event) -> None:
+            self.exit(event.button.id)
 
 
 if __name__ == "__main__":
-    HelloWorld().run()
+    reply = HelloWorld().run()
+    print(reply)
