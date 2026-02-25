@@ -1,20 +1,21 @@
 from textual.app import App, ComposeResult
-from textual.widgets import Button, Label, Static
+from textual.containers import Container, Vertical, VerticalScroll
+from textual.widgets import Input, Static
 
 
 class HelloWorld(App[str]):
     CSS_PATH = "./styled.css"
 
     def compose(self) -> ComposeResult:
-        yield Static("HelloWorld!")
-        yield Label("Boolean Value test")
-        yield Button("Yes", id="yes")
-        yield Button("No", id="no")
-
-        def on_button_pressed(self, event) -> None:
-            self.exit(event.button.id)
+        with Container(id="app-grid"):
+            with VerticalScroll(id="left-pane"):
+                for id in range(20):
+                    yield Static(f"Element {id + 1}")
+            with Vertical(id="sidebar"):
+                yield Static("[bold yellow]Hello[/]! What is your name?")
+                yield Input(placeholder="Put your name here!")
+            yield Static("[yellow bold]Top of the morning[/] to ya!", id="output")
 
 
 if __name__ == "__main__":
-    reply = HelloWorld().run()
-    print(reply)
+    HelloWorld().run()

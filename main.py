@@ -9,7 +9,6 @@ import time
 import requests as rq
 
 # Textual Imports
-from textual import log
 from textual.app import App
 from textual.widgets import Button, Label
 
@@ -31,6 +30,7 @@ class TuiApp(App):
 
 
 def main():
+    # TODO: Take care of the backend reciveing messages AND handling them to the screen somehow
     async def postReq(
         SendingMessage: str,
         url: str = "http://172.16.24.60:5678/webhook/ce9a31a3-3ca8-4d03-aaad-2da31e96a93c",
@@ -64,5 +64,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    TuiApp().run()
+    pass
